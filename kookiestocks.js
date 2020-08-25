@@ -222,7 +222,7 @@ SK.update = () => {
         SK.goods[id].formattedProfit = SK.formatPrice(SK.goods[id].profit, true);
         
         let row = table.querySelector(`#SK-${id}`);
-        row.style.opacity = bought > 1 ? 1 : .4;
+        row.style.opacity = bought > 0 ? 1 : .4;
         row.querySelector('.SK-bought').innerHTML = SK.goods[id].bought;
         row.querySelector('.SK-boughtAt').innerHTML = SK.goods[id].formatted;
         row.querySelector('.SK-profit').innerHTML = SK.goods[id].formattedProfit;
@@ -242,14 +242,12 @@ SK.minigameGoods.map((good, id) => {
         SK.update();
     };
 
-
-    let buttons = [['1',1],['10',10],['100',100],['Max',Game.ObjectsById[5].minigame.getGoodMaxStock(good)],
-                    ['-1',0],['-10',0],['-100',0],['-All',0]];
+    let buttons = ['1','10','100','Max','-1','-10','-100','-All'];
     buttons.map((b) => {
-        let _id = 'bankGood-' + id + '_' + b[0];
+        let _id = 'bankGood-' + id + '_' + b;
         document.getElementById(_id)
             .addEventListener('click', () => {
-                buy(b[1])
+                buy(good.stock);
             });
     });
 });
