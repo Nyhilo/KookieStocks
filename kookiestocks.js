@@ -1,3 +1,13 @@
+// ==UserScript==
+// @name         Stock Graph
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  Display purchase and profit information for the CookieClicker Dough Jones.
+// @author       silentclowd
+// @match        http://orteil.dashnet.org/cookieclicker/
+// @grant        none
+// ==/UserScript==
+
 let SK = {
     setCookie: (cname, cvalue, exdays) => {
         var d = new Date();
@@ -23,6 +33,7 @@ let SK = {
     saveData: {},
     minigameGoods: {},
     goods: {},
+    initializeGoods: {},
     formatPrice: {},
     update: {},
     interval: {},
@@ -167,12 +178,29 @@ let getOffset = (el) => {
     };
 };
 
-SK.drawLoop = () => {
-    var canvasRect = getOffset(document.getElementById('bankGraph'));
-    let success = canvasRect.top == SK.canvasLastTop;
-    if (success)
-        return;
+SK.initializeGoods = () => {
+    SK.minigameGoods.map((good, id) => {
+        SK.goods[id] = {
+            name: good.name,
+            bought: 0,
+            value: 0,
+            formatted: SK.formatPrice(0, false),
+            profit: 0,
+            formattedProfit: SK.formatPrice(0, true)
+        };
+    });
+};
 
+SK.drawLoop = () => {
+    if (Game.onMenu != "" || Game.ObjectsById[5].amount == 0)
+        document.getElementById('SK-container').style.visibility = 'hidden';
+    else
+        document.getElementById('SK-container').style.visibility = 'visible';
+
+    var canvasRect = getOffset(document.getElementById('bankGraph'));
+    if (canvasRect.top == SK.canvasLastTop)
+        return;
+    
     document.getElementById('SK-container').style.top = canvasRect.top + 'px';
 };
 SK.drawInterval = setInterval(SK.drawLoop, 10);
@@ -189,13 +217,19 @@ SK.formatPrice = (val, colored) => {
 };
 
 SK.update = () => {
+    if (Game.ObjectsById[5].amount == 0)
+        SK.initializeGoods();
+
     let table = document.getElementById('SKTable');
 
     SK.minigameGoods.map((good, id) => {
         let bought = SK.goods[id].bought;
+        if (good.stock == 0) {
+            SK.goods[id].bought = 0;
+            SK.goods[id].formatted = SK.formatPrice(0, false);
+        }
         SK.goods[id].profit = (good.val * bought) - (SK.goods[id].value * bought);
         SK.goods[id].formattedProfit = SK.formatPrice(SK.goods[id].profit, true);
-
         
         let row = table.querySelector(`#SK-${id}`);
         row.style.opacity = bought > 1 ? 1 : .4;
@@ -208,16 +242,9 @@ SK.update = () => {
     SK.setCookie('SK_Data', serialized);
 }
 
-SK.minigameGoods.map((good, id) => {
-    SK.goods[id] = {
-        name: good.name,
-        bought: 0,
-        value: 0,
-        formatted: SK.formatPrice(0, false),
-        profit: 0,
-        formattedProfit: SK.formatPrice(0, true)
-    };
+SK.initializeGoods();
 
+SK.minigameGoods.map((good, id) => {
     let buy = (bought) => {
         SK.goods[id].bought = bought;
         SK.goods[id].value = bought == 0 ? 0 : good.val;
