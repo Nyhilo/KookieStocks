@@ -157,17 +157,6 @@ let SK = {
 document.getElementById('sectionMiddle')
     .insertAdjacentHTML('beforeend', SK.htmlTemplate);
 
-// Attach position of div to canvas
-// This is done this way because putting this table near the canvas breaks
-// the draw loop for some reason
-let getOffset = (el) => {
-    const rect = el.getBoundingClientRect();
-    return {
-        left: rect.left + window.scrollX,
-        top: rect.top + window.scrollY
-    };
-};
-
 SK.initializeGoods = () => {
     SK.minigameGoods.map((good, id) => {
         SK.goods[id] = {
@@ -179,6 +168,17 @@ SK.initializeGoods = () => {
             formattedProfit: SK.formatPrice(0, true)
         };
     });
+};
+
+// Attach position of div to canvas
+// This is done this way because putting this table near the canvas breaks
+// the draw loop for some reason
+let getOffset = (el) => {
+    const rect = el.getBoundingClientRect();
+    return {
+        left: rect.left + window.scrollX,
+        top: rect.top + window.scrollY
+    };
 };
 
 SK.drawLoop = () => {
