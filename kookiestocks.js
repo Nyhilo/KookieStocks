@@ -199,11 +199,11 @@ SK.minigameGoods = Game.ObjectsById[5].minigame.goodsById;
 SK.goods = Array(SK.minigameGoods.length);
 
 SK.formatPrice = (val, colored) => {
-    let dollars = '$' + val.toFixed(2);
+    let money = '$' + val.toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 
     let style = colored ? (val >= 0 ? 'color:#73f21e;' : 'color:#f21e3c;') : "";
 
-    return `<span style="${style}">${dollars}</span>`;
+    return `<span style="${style}">${money}</span>`;
 };
 
 SK.update = () => {
@@ -247,7 +247,7 @@ SK.minigameGoods.map((good, id) => {
         let _id = 'bankGood-' + id + '_' + b;
         document.getElementById(_id)
             .addEventListener('click', () => {
-                buy(good.stock);
+                buy(b > good.stock ? b : good.stock);
             });
     });
 });
