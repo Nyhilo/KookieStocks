@@ -1,13 +1,3 @@
-// ==UserScript==
-// @name         Stock Graph
-// @namespace    http://tampermonkey.net/
-// @version      0.1
-// @description  Display purchase and profit information for the CookieClicker Dough Jones.
-// @author       silentclowd
-// @match        http://orteil.dashnet.org/cookieclicker/
-// @grant        none
-// ==/UserScript==
-
 let SK = {
     setCookie: (cname, cvalue, exdays) => {
         var d = new Date();
