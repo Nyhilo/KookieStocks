@@ -10,7 +10,7 @@ To install with TamperMonkey, use the following:
 ```javascript
 // ==UserScript==
 // @name         KookieStocks
-// @namespace    http://tampermonkey.net/
+// @namespace    Kookie
 // @version      0.1
 // @description  Display purchase and profit information for the CookieClicker Dough Jones.
 // @author       silentclowd
@@ -28,4 +28,12 @@ var code = "(" + (function() {
 }).toString() + ")()";
 
 window.eval(code);
+```
+
+Or paste the following into the url field for a bookmark.
+
+```javascript
+javascript:(function() {
+    Game.LoadMod('https://nyhilo.github.io/KookieStocks/kookiestocks.js');
+}());
 ```
