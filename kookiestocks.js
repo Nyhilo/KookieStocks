@@ -21,6 +21,7 @@ let SK = {
         return "";
     },
     saveData: {},
+    bank: {},
     minigameGoods: {},
     goods: {},
     initializeGoods: {},
@@ -170,6 +171,10 @@ SK.initializeGoods = () => {
     });
 };
 
+SK.bank = Game.ObjectsById[5];
+SK.minigameGoods = SK.bank.minigame.goodsById;
+SK.goods = Array(SK.minigameGoods.length);
+
 // Attach position of div to canvas
 // This is done this way because putting this table near the canvas breaks
 // the draw loop for some reason
@@ -182,7 +187,7 @@ let getOffset = (el) => {
 };
 
 SK.drawLoop = () => {
-    if (Game.onMenu != "" || Game.ObjectsById[5].amount == 0)
+    if (Game.onMenu != "" || SK.bank.amount == 0 || SK.bank.muted || !SK.bank.onMinigame)
         document.getElementById('SK-container').style.visibility = 'hidden';
     else
         document.getElementById('SK-container').style.visibility = 'visible';
@@ -195,9 +200,6 @@ SK.drawLoop = () => {
 };
 SK.drawInterval = setInterval(SK.drawLoop, 10);
 
-SK.minigameGoods = Game.ObjectsById[5].minigame.goodsById;
-SK.goods = Array(SK.minigameGoods.length);
-
 SK.formatPrice = (val, colored) => {
     let money = '$' + val.toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 
@@ -207,7 +209,7 @@ SK.formatPrice = (val, colored) => {
 };
 
 SK.update = () => {
-    if (Game.ObjectsById[5].amount == 0)
+    if (SK.bank.amount == 0)
         SK.initializeGoods();
 
     let table = document.getElementById('SKTable');

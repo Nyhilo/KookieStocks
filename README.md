@@ -11,7 +11,7 @@ To install with TamperMonkey, use the following:
 // ==UserScript==
 // @name         KookieStocks
 // @namespace    Kookie
-// @version      0.1
+// @version      0.2
 // @description  Display purchase and profit information for the CookieClicker Dough Jones.
 // @author       silentclowd
 // @match        http://orteil.dashnet.org/cookieclicker/
