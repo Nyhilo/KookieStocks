@@ -14,7 +14,8 @@ To install with TamperMonkey, use the following:
 // @version      0.1
 // @description  Display purchase and profit information for the CookieClicker Dough Jones.
 // @author       silentclowd
-// @match        http://orteil.dashnet.org/cookieclicker/
+// @include http://orteil.dashnet.org/cookieclicker/
+// @include https://orteil.dashnet.org/cookieclicker/
 // @grant        none
 // ==/UserScript==
 
