@@ -1,3 +1,6 @@
+Note: Development on this add-on has been suspended in favor of Hizin's fork of it, [EZStock](https://github.com/darthpilou/EZStock).
+
+
 # KookieStocks
 
 Gives a basic overview of how much profit you will make selling stocks in CookieClicker.
